@@ -1,14 +1,12 @@
 extern crate clap;
 use clap::{App, Arg};
 
-use std::thread;
-use std::io::{self, Write, Error, BufReader, BufRead, Read};
+
+use std::io::{self, Write, Error, BufReader, BufRead};
 use std::net::TcpStream;
 use openssl::ssl::{SslMethod, SslConnector, SslVerifyMode, SslStream};
 use bytes::{Bytes};
 use std::process;
-use std::str;
-use std::intrinsics::transmute;
 
 
 struct Router {
@@ -97,7 +95,7 @@ fn main() {
     ctx.set_verify(SslVerifyMode::NONE);
     let connector = ctx.build();
 
-    let mut tcp_stream = TcpStream::connect(format!("{}:{}", r.ip, r.port))
+    let tcp_stream = TcpStream::connect(format!("{}:{}", r.ip, r.port))
         .expect("Can not connect to router");
     let mut stream = connector.connect(ip, tcp_stream).unwrap();
 
